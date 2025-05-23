@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  tms-db:
+    image: mysql:8.0
+    container_name: tms-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: tmsdb
+      MYSQL_USER: tmsuser
+      MYSQL_PASSWORD: 123456
+      # Fixes for connection issues
+      MYSQL_ROOT_HOST: '%'
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --bind-address=0.0.0.0
+      --mysqlx-bind-address=0.0.0.0
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./dev-tools/tms-db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - tms-network
+
+networks:
+  tms-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

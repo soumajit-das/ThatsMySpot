@@ -1,0 +1,10 @@
+CREATE TABLE roles (
+    id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(500),
+    created_date TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_date TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_date TIMESTAMP NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_role_name (name)
+);
