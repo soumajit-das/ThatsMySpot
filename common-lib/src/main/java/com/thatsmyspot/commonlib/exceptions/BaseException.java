@@ -1,4 +1,4 @@
-package com.thatsmyspot.common.exceptions;
+package com.thatsmyspot.commonlib.exceptions;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

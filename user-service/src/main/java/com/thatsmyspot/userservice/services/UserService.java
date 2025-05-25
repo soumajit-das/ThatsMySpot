@@ -1,12 +1,19 @@
 package com.thatsmyspot.userservice.services;
 
-import com.thatsmyspot.common.exceptions.BadRequestException;
-import com.thatsmyspot.common.exceptions.InternalServerException;
-import com.thatsmyspot.common.exceptions.NotFoundException;
+import com.thatsmyspot.commonlib.exceptions.BadRequestException;
+import com.thatsmyspot.commonlib.exceptions.InternalServerException;
+import com.thatsmyspot.commonlib.exceptions.NotFoundException;
+import com.thatsmyspot.commonlib.redis.redisKey.RedisKeyType;
+
+import com.thatsmyspot.userservice.customAnnotations.redis.RedisCacheDelete;
+import com.thatsmyspot.userservice.customAnnotations.redis.RedisCacheUpdate;
+import com.thatsmyspot.userservice.customAnnotations.redis.RedisCache;
 import com.thatsmyspot.userservice.dto.CreateUserDto;
+import com.thatsmyspot.userservice.dto.UpdateUserDto;
 import com.thatsmyspot.userservice.entities.User;
 import com.thatsmyspot.userservice.infrastructure.UserStatus;
 import com.thatsmyspot.userservice.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +35,7 @@ public class UserService {
         }
     }
 
+    @RedisCache(keyType = RedisKeyType.USER_ID, templateComponent = "id=$0", context = User.class)
     public ResponseEntity<User> getUserById(String id) {
         try {
             Optional<User> user = userRepository.findById(id);
@@ -38,6 +46,7 @@ public class UserService {
         }
     }
 
+    @RedisCache(keyType = RedisKeyType.USER_USERNAME, templateComponent = "username=$0", context = User.class)
     public ResponseEntity<User> getUserByUsername(String username) {
         try {
             Optional<User> user = userRepository.findByUsername(username);
@@ -76,7 +85,8 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<User> updateUser(String id, User user) {
+    @RedisCacheUpdate(keyType = RedisKeyType.USER_ID, templateComponent = "id=$0", context = User.class)
+    public ResponseEntity<User> updateUser(String id, UpdateUserDto userDto) {
         try {
             Optional<User> existingUser = userRepository.findById(id);
             if (existingUser.isEmpty()) {
@@ -84,11 +94,11 @@ public class UserService {
             }
 
             User existing = existingUser.get();
-            existing.setUsername(user.getUsername());
-            existing.setEmail(user.getEmail());
-            existing.setFirstName(user.getFirstName());
-            existing.setLastName(user.getLastName());
-            existing.setPhoneNumber(user.getPhoneNumber());
+            existing.setUsername(userDto.getUsername());
+            existing.setEmail(userDto.getEmail());
+            existing.setFirstName(userDto.getFirstName());
+            existing.setLastName(userDto.getLastName());
+            existing.setPhoneNumber(userDto.getPhoneNumber());
 
             return ResponseEntity.ok().body(userRepository.save(existing));
         } catch (RuntimeException e) {
@@ -96,6 +106,7 @@ public class UserService {
         }
     }
 
+    @RedisCacheDelete(keyType = RedisKeyType.USER_ID, templateComponent = "id=$0")
     public ResponseEntity<Void> deleteUser(String id) {
         try {
             userRepository.deleteById(id);

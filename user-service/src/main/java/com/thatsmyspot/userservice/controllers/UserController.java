@@ -1,6 +1,7 @@
 package com.thatsmyspot.userservice.controllers;
 
 import com.thatsmyspot.userservice.dto.CreateUserDto;
+import com.thatsmyspot.userservice.dto.UpdateUserDto;
 import com.thatsmyspot.userservice.entities.User;
 import com.thatsmyspot.userservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody UpdateUserDto user) {
         return userService.updateUser(id, user);
     }
 

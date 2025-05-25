@@ -1,4 +1,4 @@
-package com.thatsmyspot.userservice.exceptionHandler;
+package com.thatsmyspot.commonlib.exceptions.infrastructure;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.thatsmyspot.common.events;
+package com.thatsmyspot.commonlib.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

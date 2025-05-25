@@ -1,0 +1,2 @@
+user default on +@all ~* > 123456
+user default off +@all +hello

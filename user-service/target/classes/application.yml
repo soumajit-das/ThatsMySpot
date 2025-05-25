@@ -4,6 +4,25 @@ server:
     context-path: /user-service
 
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      username: default
+      password: 123456
+      database: 0
+#    timeout: 2000ms
+#    database: 0
+#    lettuce:
+#      pool:
+#        max-active: 20
+#        max-idle: 10
+#        min-idle: 5
+#        max-wait: 2000ms
+
+#  cache:
+#    type: redis
+
   datasource:
     url: jdbc:mysql://localhost:3307/userdb
     username: root

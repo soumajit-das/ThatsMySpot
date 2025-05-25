@@ -1,6 +1,7 @@
-package com.thatsmyspot.userservice.exceptionHandler;
+package com.thatsmyspot.userservice.config;
 
-import com.thatsmyspot.common.exceptions.BaseException;
+import com.thatsmyspot.commonlib.exceptions.BaseException;
+import com.thatsmyspot.commonlib.exceptions.infrastructure.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
